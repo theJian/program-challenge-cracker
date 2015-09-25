@@ -1,0 +1,63 @@
+Link : http://codeforces.com/contest/580/problem/C
+
+Let's go down the tree from the root, supporting additional parameter k — the number of vertices in a row met with cats. 
+If k exceeds m, then leave. 
+Then the answer is the number of leaves, which we were able to reach.
+It is easy to code,but I failed in that test.
+
+#include <cstdio>
+#include <iostream>
+#include <cstring>
+#include <vector>
+
+using namespace std;
+
+const int maxn = 100055;
+
+vector<int>G[maxn];
+
+int a[maxn];
+
+void add_edge(int u,int v)
+{
+    G[u].push_back(v);
+    G[v].push_back(u);
+}
+
+int ans;
+int n,m;
+int vis[maxn];
+int cnt;
+void dfs(int u, int p, int c)
+{
+	bool leaf = true;
+	if (!a[u]) c = 0;
+	else c++;
+	if (c > m) return;
+	for (int i = 0; i < G[u].size(); i++)
+	{
+		int v = G[u][i];
+		if (v == p) continue;
+		dfs(v, u, c);
+		leaf = false;
+	}
+	if (leaf) cnt++;
+}
+int main()
+{
+    scanf("%d%d",&n,&m);
+    for(int i=0;i<n;i++){
+        scanf("%d",&a[i]);
+    }
+    for(int i=1;i<n;i++){
+        int x,y;
+        scanf("%d%d",&x,&y);
+        x--;
+        y--;
+        add_edge(x,y);
+    }
+    cnt = 0;
+    dfs(0,-1,0);
+    printf("%d\n",cnt);
+    return 0;
+}
