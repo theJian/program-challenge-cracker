@@ -1,0 +1,59 @@
+Link : http://codeforces.com/contest/580/problem/B
+
+At first we sort all friends in money ascending order. Now the answer is some array subsegment. 
+Next, we use the method of two pointers for finding the required subsegment.
+This problem also can be solved by binary-searh.
+
+Asymptotics — O(n log n).
+
+#include <cstdio>
+#include <cstring>
+#include <iostream>
+#include <stack>
+#include <queue>
+#include <map>
+#include <algorithm>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+const int maxn = 1000005;
+
+typedef long long LL;
+
+vector<int>G[maxn];
+
+struct node
+{
+    int x,y;
+}a[maxn];
+
+bool cmp(node a,node b)
+{
+    if(a.x == b.x) return a.y<b.y;
+   return a.x<b.x;
+}
+
+int main()
+{
+    int n,m;
+
+    while(scanf("%d%d",&n,&m)!=EOF){
+    for(int i=1;i<=n;i++){
+         scanf("%d%d",&a[i].x,&a[i].y);
+    }
+    sort(a+1,a+n+1,cmp);
+    LL sum = 0;
+    LL ans = -999999999999;
+    int l = 1;
+    for(int i=1;i<=n;i++){
+        while(a[i].x-a[l].x>=m)
+            sum -= a[l++].y;
+            sum += a[i].y;
+            ans = max(sum,ans);
+    }
+    printf("%lld\n",ans);
+}
+   return 0;
+}
